@@ -4,7 +4,7 @@ import { Divider } from 'pluralsh-design-system'
 import { useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import queryString from 'query-string'
-import { Button, Flex, Input } from 'honorable'
+import { Button, Flex, H1, H2, Box as HBox, Input, P } from 'honorable'
 
 import { fetchToken, setToken } from '../../helpers/authentication'
 import { Alert, AlertStatus, GqlError } from '../utils/Alert'
@@ -53,6 +53,81 @@ export function LabelledInput({ label, value, onChange, placeholder, width, type
   )
 }
 
+function ValueNum({ children }) {
+  return (
+    <Flex
+      width="48px"
+      height="48px"
+      borderRadius="24px"
+      flexShrink={0}
+      justifyContent="center"
+      alignItems="center"
+      background="background-light"
+      mr="24px"
+    >
+      <H1>{children}</H1>
+    </Flex>
+  )
+}
+
+function ValueContent({ children, title }) {
+  return (
+    <HBox>
+      <H2 mb={0.5}>
+        {title}
+      </H2>
+      <P>
+        {children}
+      </P>
+    </HBox>
+  )
+}
+
+function LoginValueProps() {
+  return (
+    <HBox
+      maxWidth="400px"
+    >
+      <Flex justifyContent="center">
+        <img
+          src={PLURAL_ICON}
+          width={256}
+        />
+      </Flex>
+      <Flex
+        fill="horizontal"
+        direction="row"
+      >
+        <ValueNum>1</ValueNum>
+        <ValueContent title={<>Built for the cloud.</>}>
+          Plural is optimized for you to bring your own cloud and run on top of
+          Kubernetes with the ideal cluster distribution.
+        </ValueContent>
+      </Flex>
+      <Flex
+        fill="horizontal"
+        direction="row"
+      >
+        <ValueNum>2</ValueNum>
+        <ValueContent title={<>Developer friendly.</>}>
+          Use our simple GitOps driven workflow for deploying and managing
+          applications, and a centralized configuration in a single repo.
+        </ValueContent>
+      </Flex>
+      <Flex
+        fill="horizontal"
+        direction="row"
+      >
+        <ValueNum>3</ValueNum>
+        <ValueContent title={<>Batteries included.</>}>
+          Baked-in observability, logging, auditing, and user auth.
+        </ValueContent>
+      </Flex>
+    </HBox>
+  )
+
+}
+
 export function LoginPortal({ children, ...props }) {
   return (
     <Box
@@ -61,22 +136,20 @@ export function LoginPortal({ children, ...props }) {
       direction="row"
     >
       <Flex
-        align="center"
         justify="center"
-        width="40%"
+        align="center"
+        width="50%"
         height="100%"
-        background="darken(background, 2)"
+        backgroundColor="background-middle"
       >
-        <img
-          src={PLURAL_ICON}
-          width={256}
-        />
+        <LoginValueProps />
       </Flex>
       <Box
         style={{ overflow: 'auto' }}
-        fill
         align="center"
         justify="center"
+        width="50%"
+        // backgroundColor="background"
       >
         <Box
           flex={false}
