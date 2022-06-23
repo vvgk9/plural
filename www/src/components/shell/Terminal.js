@@ -1,26 +1,24 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import './shell.css'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, Drop, Layer, Text } from 'grommet'
-
 import { XTerm } from 'xterm-for-react'
 import { FitAddon } from 'xterm-addon-fit'
-
-import './shell.css'
-import { useQuery } from 'react-apollo'
-
+import { useQuery } from '@apollo/client'
 import { CircleInformation } from 'grommet-icons'
-import { ModalHeader, Update } from 'forge-core'
+import { Update } from 'forge-core'
 
 import { LoopingLogo } from '../utils/AnimatedLogo'
 import { socket } from '../../helpers/client'
 import { Code } from '../incidents/Markdown'
+import { ModalHeader } from '../ModalHeader'
 
 import { ShellStatus } from './ShellStatus'
 
-import { CLOUD_SHELL } from './query'
+import { CLOUD_SHELL_QUERY } from './query'
 import { ThemeSelector } from './ThemeSelector'
 import { normalizedThemes, savedTheme } from './themes'
 
-const decodeBase64 = str => (new Buffer(str, 'base64')).toString('utf-8')
+const decodeBase64 = str => Buffer.from(str, 'base64').toString('utf-8')
 
 export function Shell({ room, header, title, children }) {
   const xterm = useRef(null)
@@ -33,7 +31,7 @@ export function Shell({ room, header, title, children }) {
   useEffect(() => {
     if (!xterm || !xterm.current || !xterm.current.terminal) return
     const term = xterm.current.terminal
-  
+
     fitAddon.fit()
     term.write(`${header}\r\n\r\n`)
     const chan = socket.channel(room, {})
@@ -51,14 +49,14 @@ export function Shell({ room, header, title, children }) {
       socket.off([ref])
       chan.leave()
     }
-  }, [room, xterm, fitAddon])
+  }, [room, xterm, fitAddon, header])
 
   const resetSize = useCallback(() => channel.push('resize', { width: dims.cols, height: dims.rows }), [channel, dims])
 
   return (
     <Box
       fill
-      background="backgroundColor"
+      background="background"
     >
       <Box
         flex={false}
@@ -78,7 +76,7 @@ export function Shell({ room, header, title, children }) {
           >{title}
           </Text>
           <Information />
-          <Icon 
+          <Icon
             icon={<Update size="20px" />}
             onClick={resetSize}
             tooltip="repair viewport"
@@ -97,13 +95,13 @@ export function Shell({ room, header, title, children }) {
           pad="small"
           background={themeStruct.background}
         >
-          <XTerm 
+          <XTerm
             className="terminal"
             ref={xterm}
             addons={[fitAddon]}
             options={{ theme: themeStruct }}
             onResize={({ cols, rows }) => {
-              channel && channel.push('resize', { width: cols, height: rows })
+              if (channel) channel.push('resize', { width: cols, height: rows })
             }}
             onData={text => channel.push('command', { cmd: text })}
           />
@@ -156,7 +154,7 @@ function Icon({ icon, onClick, tooltip }) {
             round="3px"
             background="sidebarHover"
             pad="xsmall"
-            elevation="small" 
+            elevation="small"
             align="center"
             justify="center"
           >
@@ -205,7 +203,7 @@ function Information() {
                 >
                   plural login && plural shell sync
                 </Code>
-                <Text size="small"><i>this will clone your repo locally, and sync all encryption keys needed to access it</i></Text>
+                <Text size="small"><i>this will clone your repository locally, and sync all encryption keys needed to access it</i></Text>
               </Box>
               <Box gap="small">
                 <Code
@@ -225,9 +223,9 @@ function Information() {
 }
 
 export function Terminal() {
-  const { data } = useQuery(CLOUD_SHELL, { pollInterval: 5000, fetchPolicy: 'cache-and-network' })
+  const { data } = useQuery(CLOUD_SHELL_QUERY, { pollInterval: 5000, fetchPolicy: 'cache-and-network' })
 
-  if (!data || !data.shell) return <LoopingLogo dark /> 
+  if (!data || !data.shell) return <LoopingLogo dark />
 
   if (!data.shell.alive) return <ShellStatus shell={data.shell} />
 
@@ -248,7 +246,7 @@ export function Terminal() {
       >
         <Text size="small">Here's a few commands to help you get going:</Text>
         <CommandDetails
-          command="plural repos list --query <repo-name>"
+          command="plural repos list --query <repository-name>"
           description="Searches for repositories to install (omit --query flag to list all)"
         />
         <CommandDetails

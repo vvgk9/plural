@@ -1,16 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useQuery, useSubscription } from 'react-apollo'
+import { useContext, useEffect, useState } from 'react'
+import { useQuery, useSubscription } from '@apollo/client'
 import { Reload as Refresh } from 'forge-core'
-
 import { Box, Text } from 'grommet'
-
 import moment from 'moment'
-
 import { BeatLoader } from 'react-spinners'
-
 import { Github } from 'grommet-icons'
-
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom'
 
 import { appendConnection, extendConnection } from '../../utils/graphql'
 import { RepoIcon } from '../repos/Repositories'
@@ -63,7 +58,6 @@ function Upgrade({ upgrade, acked }) {
       <RepoIcon
         size="30px"
         repo={upgrade.repository}
-        dark
       />
       <Box fill="horizontal">
         <Box
@@ -103,7 +97,7 @@ export function UpgradeQueue() {
     document: UPGRADE_SUB,
     variables: { id },
     updateQuery: ({ upgradeQueue, ...rest }, { subscriptionData: { data: { upgrade } } }) => ({ ...rest, upgradeQueue: appendConnection(upgradeQueue, upgrade, 'upgrades') }),
-  }), [])
+  }), [id, subscribeToMore])
 
   const { setBreadcrumbs } = useContext(BreadcrumbsContext)
   useEffect(() => {
@@ -115,10 +109,7 @@ export function UpgradeQueue() {
 
   if (!data) {
     return (
-      <LoopingLogo
-        dark
-        darkbg
-      />
+      <LoopingLogo />
     )
   }
 
@@ -130,7 +121,7 @@ export function UpgradeQueue() {
       fill
       gap="small"
       pad="small"
-      background="backgroundColor"
+      background="background"
     >
       <Container
         title={queue.name || 'default'}
@@ -143,7 +134,6 @@ export function UpgradeQueue() {
           pad="small"
         >
           <Provider
-            dark
             provider={queue.provider}
             width={45}
           />
@@ -197,8 +187,8 @@ export function UpgradeQueue() {
             flex={false}
             pad="xsmall"
             round="xsmall"
-            onClick={() => refetch()} 
-            hoverIndicator="hover"
+            onClick={() => refetch()}
+            hoverIndicator="fill-one"
             focusIndicator={false}
           >
             <Refresh size="small" />
@@ -210,14 +200,14 @@ export function UpgradeQueue() {
           setListRef={setListRef}
           hasNextPage={pageInfo.hasNextPage}
           items={edges}
-          loading={loading} 
+          loading={loading}
           mapper={({ node }) => (
             <Upgrade
               key={node.id}
               upgrade={node}
               acked={acked}
             />
-          )} 
+          )}
           loadNextPage={() => pageInfo.hasNextPage && fetchMore({
             variables: { cursor: pageInfo.endCursor },
             updateQuery: (prev, { fetchMoreResult: { upgradeQueue: { upgrades } } }) => ({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Anchor, Box, Layer, Text } from 'grommet'
 import moment from 'moment'
 import { Scroller } from 'forge-core'
@@ -16,8 +16,8 @@ export function Version({ version, onSelect, refetch }) {
       direction="row"
       align="center"
       className="chart-version"
-      height="30px" 
-      hoverIndicator="tone-light"
+      height="30px"
+      hoverIndicator="background"
       onClick={() => null}
       pad={{ horizontal: 'small' }}
     >
@@ -86,7 +86,8 @@ export function Versions({ setVersion, edges, refetch, pageInfo, fetchMore }) {
         size="small"
         weight="bold"
         margin={{ left: 'small' }}
-      >Versions
+      >
+        Versions
       </Text>
       <Scroller
         id="chart"

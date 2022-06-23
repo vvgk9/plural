@@ -1,53 +1,48 @@
-import React from 'react'
-import { Box } from 'grommet'
-import { Github, Twitter } from 'grommet-icons'
-import { Discord } from 'forge-core'
+import { A, Flex } from 'honorable'
+import { DiscordIcon, GitHubLogoIcon, TwitterIcon } from 'pluralsh-design-system'
 
-const ICON_SIZE = '17px'
-const BOX_SIZE = '28px'
+const ICON_SIZE = 22
+const BOX_SIZE = 28
 
 function SocialLink({ icon, url }) {
   return (
-    <a
+    <A
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      ml={0.25}
+      display="flex"
+      alignItems="center"
+      alignContent="center"
+      width={BOX_SIZE}
+      height={BOX_SIZE}
+      hoverIndicator="fill-one"
+      borderRadius={4}
     >
-      <Box
-        width={BOX_SIZE}
-        height={BOX_SIZE}
-        align="center"
-        justify="center"
-        onClick={() => null}
-        hoverIndicator="backgroundColor"
-        round="xsmall"
-      >
-        {icon}
-      </Box>
-    </a>
+      {icon}
+    </A>
   )
 }
 
 export function SocialLinks() {
   return (
-    <Box
-      flex={false}
-      background="sidebarHover"
-      direction="row"
-      gap="xsmall"
-      border
-      round="xsmall"
-      pad={{ horizontal: 'xsmall' }}
-      height="32px"
+    <Flex
+      ml={1}
       align="center"
+      flexShrink={0}
     >
       <SocialLink
-        icon={<Github size={ICON_SIZE} />}
+        icon={(
+          <GitHubLogoIcon
+            size={ICON_SIZE}
+            color="white"
+          />
+        )}
         url="https://github.com/pluralsh/plural"
       />
       <SocialLink
         icon={(
-          <Discord
+          <DiscordIcon
             size={ICON_SIZE}
             color="white"
           />
@@ -55,9 +50,14 @@ export function SocialLinks() {
         url="https://discord.gg/bEBAMXV64s"
       />
       <SocialLink
-        icon={<Twitter size={ICON_SIZE} />}
+        icon={(
+          <TwitterIcon
+            size={ICON_SIZE}
+            color="white"
+          />
+        )}
         url="https://twitter.com/plural_sh"
       />
-    </Box>
+    </Flex>
   )
 }

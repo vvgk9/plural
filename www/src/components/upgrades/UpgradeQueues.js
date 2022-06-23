@@ -1,9 +1,7 @@
-import React, { useContext, useEffect } from 'react'
-import { useQuery } from 'react-apollo'
-
-import { useHistory } from 'react-router'
+import { useContext, useEffect } from 'react'
+import { useQuery } from '@apollo/client'
+import { useNavigate } from 'react-router-dom'
 import { Box, Text } from 'grommet'
-
 import { Github } from 'grommet-icons'
 import { Update } from 'forge-core'
 
@@ -16,14 +14,14 @@ import { QueueHealth } from './QueueHealth'
 import { QUEUES, UPGRADE_QUEUE_SUB } from './queries'
 
 function Queue({ q }) {
-  const hist = useHistory()
+  const navigate = useNavigate()
 
   return (
     <Box
       flex={false}
       pad="small"
-      onClick={() => hist.push(`/upgrades/${q.id}`)}
-      hoverIndicator="hover"
+      onClick={() => navigate(`/upgrades/${q.id}`)}
+      hoverIndicator="fill-one"
       border={{ side: 'bottom' }}
       direction="row"
       gap="small"
@@ -31,7 +29,6 @@ function Queue({ q }) {
       fill="horizontal"
     >
       <Provider
-        dark
         provider={q.provider}
         width={30}
       />
@@ -81,7 +78,7 @@ export function UpgradeQueues() {
   useEffect(() => subscribeToMore({
     document: UPGRADE_QUEUE_SUB,
     updateQuery: ({ upgradeQueues, ...prev }, { subscriptionData: { data: { upgradeQueueDelta: { delta, payload } } } }) => delta === 'CREATE' ? { ...prev, upgradeQueues: [payload, ...upgradeQueues] } : prev,
-  }), [])
+  }), [subscribeToMore])
 
   const { setBreadcrumbs } = useContext(BreadcrumbsContext)
   useEffect(() => {
@@ -90,17 +87,14 @@ export function UpgradeQueues() {
 
   if (!data) {
     return (
-      <LoopingLogo
-        dark
-        darkbg
-      />
+      <LoopingLogo />
     )
   }
 
   return (
     <Box
       fill
-      background="backgroundColor"
+      background="background"
     >
       <Box
         flex={false}

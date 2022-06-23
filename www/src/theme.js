@@ -1,3 +1,5 @@
+// DEPRECATED
+// In favor of plural-design-system/theme
 import { css } from 'styled-components'
 
 import { alpha, shadeColor } from './utils/color'
@@ -50,6 +52,34 @@ export const PLURAL_THEME = {
   'purple-dark-2': '#650077',
   'purple-light': '#df00ff',
   'purple-light-2': '#f7ccff',
+  'fill-zero': 'grey.900',
+  'fill-zero-hover': 'grey.875',
+  'fill-zero-selected': 'grey.825',
+  'fill-one': 'grey.850',
+  'fill-one-hover': 'grey.825',
+  'fill-one-selected': 'grey.775',
+  'fill-two': 'grey.800',
+  'fill-two-hover': 'grey.775',
+  'fill-two-selected': 'grey.725',
+  'fill-three': 'grey.750',
+  'grey.950': '#0E1015',
+  'grey.900': '#171A21',
+  'grey.875': '#1C2026',
+  'grey.850': '#1E2229',
+  'grey.825': '#23272E',
+  'grey.800': '#2A2E37',
+  'grey.775': '#303540',
+  'grey.750': '#363B45',
+  'grey.725': '#3C414D',
+  'grey.700': '#434956',
+  'grey.600': '#555C68',
+  'grey.500': '#757D8A',
+  'grey.400': '#9096A2',
+  'grey.300': '#A9B0BC',
+  'grey.200': '#C4CAD4',
+  'grey.100': '#DEE2E8',
+  'grey.50': '#E9ECF0',
+  // ...theme.colors,
 }
 
 export const DEFAULT_COLOR_THEME = {
@@ -70,9 +100,7 @@ export const DEFAULT_COLOR_THEME = {
   sidebarBorder: alpha('#363840', 0.4),
   sidebarBackground: '#0d1215',
   orange: '#d7722c',
-  error: '#b52d31',
   presence: '#39E500',
-  success: 'green',
   link: '#3366BB',
   notif: 'error',
   good: '#00ac46',
@@ -81,17 +109,80 @@ export const DEFAULT_COLOR_THEME = {
   high: 'red-dark',
   critical: 'red-dark-2',
   label: 'light-2',
-  'input-border': 'light-5',
-  border: { light: 'light-5', dark: 'card' },
+  'input-border': 'border',
+  primary: '#0639FF',
+  background: {
+    light: 'transparent',
+    dark: 'transparent',
+  },
+  'background-light': {
+    light: '#f5f7f9',
+    dark: '#22293b',
+  },
+  text: {
+    light: 'inherit',
+    dark: 'inherit',
+  },
+  'text-light': {
+    light: 'lighten(text, 15)',
+    dark: 'darken(text, 15)',
+  },
+  border: {
+    light: '#CCCCCC',
+    dark: '#303340',
+  },
+  shadow: {
+    light: 'rgba(0, 0, 0, 0.2)',
+    dark: 'rgba(64, 64, 64, 0.2)',
+  },
+  success: '#07E5A7',
+  error: '#E03E43',
+  warning: '#EF931D',
+  secondary: '#222534',
+  'background-middle': {
+    light: '#EEEEEE',
+    dark: '#222534',
+  },
+  'background-top': {
+    light: 'white',
+    dark: '#323643',
+  },
+  'text-strong': {
+    light: '#000000',
+    dark: 'white',
+  },
+  'text-weak': {
+    light: '#444444',
+    dark: '#CCCCCC',
+  },
+  'text-xweak': {
+    light: '#666666',
+    dark: '#999999',
+  },
+  'background-success': '#07E5A733',
+  'background-warning': '#EF931D66',
+  'background-error': '#E03E4366',
+  'background-info': '#0190C266',
+  'accent-blue': {
+    dark: '#0190C2',
+    light: '#0190C2',
+  },
+  'accent-purple': {
+    dark: '#9510A1',
+    light: '#9510A1',
+  },
+  'accent-green': {
+    dark: '#058E4B',
+    light: '#058E4B',
+  },
   ...PLURAL_THEME,
 }
 
 export const DEFAULT_THEME = {
   anchor: {
-    color: { light: 'link', dark: 'white' },
+    color: 'text',
     hover: {
-      textDecoration: 'none',
-      extend: 'font-weight: 600',
+      textDecoration: 'underline',
     },
     fontWeight: 400,
   },
@@ -109,8 +200,8 @@ export const DEFAULT_THEME = {
     extend: boxStyle,
   },
   tab: {
-    active: { color: 'focus' },
-    border: { active: { color: 'focus' }, hover: { color: 'focus' } },
+    // active: { color: 'focus' },
+    // border: { active: { color: 'focus' }, hover: { color: 'border' } },
   },
   textArea: {
     extend: {
@@ -137,12 +228,19 @@ export const DEFAULT_THEME = {
     },
   },
   drop: { border: { radius: '4px' } },
+  layer: {
+    background: 'background',
+  },
   global: {
     colors: DEFAULT_COLOR_THEME,
     focus: { shadow: null, border: { color: 'brand' } },
     control: { border: { radius: '2px' } },
     drop: {
+      background: 'background-top',
       border: { radius: '4px' },
+      extend: css`
+        box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.2);
+      `,
     },
     box: { extend: boxStyle },
     checkBox: { toggle: { color: 'brand' } },
